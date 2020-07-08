@@ -1,6 +1,11 @@
 import os
+import shutil
 from datetime import datetime
 from PIL import Image
+
+def folder_path_from_photo_date(file):
+    date = photo_shooting_date(file)
+    return date.strftime('%Y') + '/' + date.strftime('%Y-%m-%d')
 
 def photo_shooting_date(file):
     photo = Image.open(file)
@@ -12,4 +17,11 @@ def photo_shooting_date(file):
         date = datetime.fromtimestamp(os.path.getmtime(file))
     return date
 
-print(photo_shooting_date('snes.jpg'))
+def move_photo(file):
+    new_folder = folder_path_from_photo_date(file)
+    if not os.path.exists(new_folder):
+        os.makedirs(new_folder)
+    shutil.move(file, new_folder + '/' + file)
+
+
+print(move_photo('snes.jpg')) 

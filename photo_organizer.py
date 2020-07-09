@@ -3,6 +3,8 @@ import shutil
 from datetime import datetime
 from PIL import Image
 
+extensions = ['jpg', 'jpeg', 'JPG', 'JPEG']
+
 def folder_path_from_photo_date(file):
     date = photo_shooting_date(file)
     return date.strftime('%Y') + '/' + date.strftime('%Y-%m-%d')
@@ -23,5 +25,12 @@ def move_photo(file):
         os.makedirs(new_folder)
     shutil.move(file, new_folder + '/' + file)
 
+def organize():
+    photos = [
+        filename for filename in os.listdir('.') if any(filename.endswith(ext) for ext in extensions)
+    ]
+    for filename in photos:
+        move_photo(filename)
 
-print(move_photo('snes.jpg')) 
+#Start script
+organize() 
